@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Producción">
+  <link rel="apple-touch-icon" href="icons/Cocep_.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="icons/Cocep_.png?v=1" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+
+  <title>formulario_app</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* Estilos de la pantalla de carga */
+    #loading {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+      background: white;
+    }
+
+    #loading img {
+      width: 80%;
+      max-width: 400px;
+      margin-bottom: 30px;
+    }
+
+    #loading .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #919c8c;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .flutter-loader {
+      display: none;
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+    import firebaseConfig from "./firebase-options.js"; // Usa la configuración generada automáticamente
+
+    // Inicializar Firebase con la configuración generada
+    const app = initializeApp(firebaseConfig);
+
+    // Inicializar Firebase Messaging
+    if ('Notification' in window) {
+      const messaging = getMessaging(app);
+
+      // Solicitar permiso para notificaciones
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          getToken(messaging)
+            .then(token => console.log("Token de notificaciones:", token))
+            .catch(error => console.error("Error al obtener token:", error));
+        }
+      });
+
+      // Manejar mensajes en primer plano
+      onMessage(messaging, payload => {
+        console.log("Mensaje recibido:", payload);
+      });
+    } else {
+      console.warn("Las notificaciones no son compatibles en este navegador.");
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Pantalla de carga -->
+  <div id="loading">
+    <img src="assets/Cocep_.png" alt="COCEP" />
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    // Registrar el Service Worker para Firebase Messaging
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('firebase-messaging-sw.js')
+        .then((registration) => {
+          console.log("Service Worker registrado:", registration);
+        })
+        .catch((error) => {
+          console.error("Error al registrar el Service Worker:", error);
+        });
+    }
+
+    // Quitar la pantalla de carga cuando Flutter esté listo
+    window.addEventListener('flutter-first-frame', function () {
+      var loadingElement = document.querySelector('#loading');
+      if (loadingElement) {
+        loadingElement.remove();
+      }
+    });
+  </script>
+
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+
+</html>

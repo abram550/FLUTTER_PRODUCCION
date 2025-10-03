@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "530652435890",
+    "project_id": "cocep-producccion",
+    "storage_bucket": "cocep-producccion.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530652435890:android:3177b0646bf3e47bb540ab",
+        "android_client_info": {
+          "package_name": "com.example.church_management_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS3iw5cHjsFrIqYW0lXShDeXJS63pw2PM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
